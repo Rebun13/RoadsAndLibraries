@@ -4,6 +4,7 @@
 #include <string>
 #include <algorithm>
 #include <unordered_set>
+#include <iterator>
 
 using namespace std;
 
@@ -37,6 +38,7 @@ long roadsAndLibraries(int n, int c_lib, int c_road, vector<vector<int>> cities)
 
     for(int city = 2; city <= n; ++city) {
         if(hasAccessToLibrary.find(city) == hasAccessToLibrary.end()) {
+            cout << "New library in " << city << endl;
             hasAccessToLibrary.insert(city);
             price += c_lib;
             price += connectToAll(city, c_road, cities, hasAccessToLibrary);
@@ -47,19 +49,26 @@ long roadsAndLibraries(int n, int c_lib, int c_road, vector<vector<int>> cities)
 
 long connectToAll(int city, int c_road, vector<vector<int>> cities, unordered_set<int> &outHasAccess){
     long price = 0;
-    // TODO: remove cityPair once the road is constructed
-    for(vector<int> cityPair : cities) {
-        if(cityPair.at(0) == city) {
-            if(outHasAccess.find(cityPair.at(1)) == outHasAccess.end()) {
-                outHasAccess.insert(cityPair.at(1));
+    for(auto iter = cities.cbegin(); iter != cities.cend(); ++iter) {
+        int cityA = iter->at(0);
+        int cityB = iter->at(1);
+        if(cityA == city) {
+            if(outHasAccess.find(cityB) == outHasAccess.end()) {
+                cout << "City " << cityB << " got access from " << city << endl;
+                outHasAccess.insert(cityB);
                 price += c_road;
-                price += connectToAll(cityPair.at(1), c_road, cities, outHasAccess);
+                cout << "Price: " << price << endl;
+                cities.erase(iter--);
+                price += connectToAll(cityB, c_road, cities, outHasAccess);
             }
-        } else if(cityPair.at(1) == city) {
-            if(outHasAccess.find(cityPair.at(0)) == outHasAccess.end()) {
-                outHasAccess.insert(cityPair.at(0));
+        } else if(cityB == city) {
+            if(outHasAccess.find(cityA) == outHasAccess.end()) {
+                cout << "City " << cityA << " got access from " << city << endl;
+                outHasAccess.insert(cityA);
                 price += c_road;
-                price += connectToAll(cityPair.at(0), c_road, cities, outHasAccess);
+                cout << "Price: " << price << endl;
+                cities.erase(iter--);
+                price += connectToAll(cityA, c_road, cities, outHasAccess);
             }
         }
     }
