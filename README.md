@@ -2,7 +2,7 @@
 
 ## Description
 
-Determine the minimum cost to provide library access to all citizens of HackerLand. There are cities numbered from _1_ to _n_. Currently, there are no libraries and the cities are not connected. Bidirectional roads may be built between any city pair listed in _cities_. A citizen has access to a library if:
+Determine the minimum cost to provide library access to all citizens of HackerLand. There are _n_ cities numbered from _1_ to _n_. Currently, there are no libraries and the cities are not connected. Bidirectional roads may be built between any city pair listed in _cities_. A citizen has access to a library if:
 
 - Their city contains a library.
 - They can travel by road from their city to a city containing a library.
